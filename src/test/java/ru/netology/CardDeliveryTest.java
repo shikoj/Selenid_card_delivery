@@ -85,7 +85,7 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void negativeTestInvalidPhone() {
+    void negativeTestNoAgreement() {
         Selenide.open("http://localhost:9999");
         $("[data-test-id='city'] input").setValue("Москва");
         $("[data-test-id='name'] input").setValue("Иван Петров");
@@ -96,7 +96,7 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void negativeTestNoAgreement() {
+    void negativeTestInvalidPhone() {
         Selenide.open("http://localhost:9999");
         $("[data-test-id='city'] input").setValue("Москва");
         $("[data-test-id='name'] input").setValue("Иван Петров");
@@ -106,6 +106,18 @@ public class CardDeliveryTest {
         $("[data-test-id='phone'].input_invalid")
                 .should(Condition.visible)
                 .should(Condition.text("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+    }
+
+    @Test
+    void negativeTestNoName() {
+        Selenide.open("http://localhost:9999");
+        $("[data-test-id='city'] input").setValue("Москва");
+        $("[data-test-id='phone'] input").setValue("+79031111111");
+        $("[data-test-id='agreement']").click();
+        $$("button").find(Condition.text("Забронировать")).click();
+        $("[data-test-id='name'].input_invalid")
+                .should(Condition.visible)
+                .should(Condition.text("Поле обязательно для заполнения"));
     }
 
 
