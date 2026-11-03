@@ -122,10 +122,10 @@ public class CardDeliveryTest {
 
     @Test
     void level2() {
-        String defaultMonth = generateDate(3, "MM");
-        String planningDate = generateDate(26, "dd.MM.yyyy");
-        String findDate = generateDate(26, "d");
-        String findMonth = generateDate(26, "MM");
+        String defaultMonth = generateDate(25, "MM");
+        String planningDate = generateDate(32, "dd.MM.yyyy");
+        String findDate = generateDate(32, "d");
+        String findMonth = generateDate(32, "MM");
 
 
         Selenide.open("http://localhost:9999");
