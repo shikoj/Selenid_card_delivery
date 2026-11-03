@@ -10,7 +10,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -123,13 +122,19 @@ public class CardDeliveryTest {
 
     @Test
     void level2() {
-        String planningDate = generateDate(7, "dd.MM.yyyy");
-        String findDate = generateDate(7, "d");
+        String defaultMonth = generateDate(3, "MM");
+        String planningDate = generateDate(26, "dd.MM.yyyy");
+        String findDate = generateDate(26, "d");
+        String findMonth = generateDate(26, "MM");
+
 
         Selenide.open("http://localhost:9999");
         $("[data-test-id='city'] input").setValue("Се");
-        $(byText("Севастополь")).click();
+        $$(".popup").find(Condition.text("Севастополь")).click();
         $("[data-test-id='date'] button").click();
+        if (!findMonth.equals(defaultMonth)) {
+            $(".calendar__arrow_direction_right[data-step='1']").click();
+        }
         $$(".calendar__day").find(Condition.text(findDate)).click();
         $("[data-test-id='name'] input").setValue("Иван Петров");
         $("[data-test-id='phone'] input").setValue("+79031111111");
@@ -137,8 +142,5 @@ public class CardDeliveryTest {
         $$("button").find(Condition.text("Забронировать")).click();
         $("[data-test-id='notification']").should(Condition.visible, Duration.ofSeconds(15));
         $(".notification__content").should(Condition.text("Встреча успешно забронирована на " + planningDate));
-
     }
-
-
 }
